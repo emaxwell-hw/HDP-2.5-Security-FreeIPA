@@ -18,11 +18,22 @@ ipaserver:~ # ipa-server-install
 </pre>
 
 ###Configure krb5.conf ccache
-HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:<br><br>
-<code>default_ccache_name = KEYRING:persistent:%{uid}</code><br><br>
-to<br>
-<code>default_ccache_name = FILE:/tmp/krb5cc_%{uid}</code>
+HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:
+<pre>default_ccache_name = KEYRING:persistent:%{uid}</pre>
+to
+<pre>default_ccache_name = FILE:/tmp/krb5cc_%{uid}</pre>
 
+###Create a hadoopadmin user
+In order to create users in FreeIPA, an administrative use is required. The default admin@REALM user can be used (password created during IPA server install). Alternatively, create a hadoopadmin user:
+<pre>
+ipa add-user hadoopadmin --first=Hadoop --last=Admin
+ipa group-add-member admins --users=hadoopadmin
+ipa passwd hadoopadmin
+</pre>
+Because of the way FreeIPA automatically expires the new password, it is necessary to kinit as hadoopadmin and change the initial password. The password can be set to the same password:
+<pre>
+kinit hadoopadmin@REALM
+</pre>
 
 ##Step 3: Prepare the HDP VMs
 
