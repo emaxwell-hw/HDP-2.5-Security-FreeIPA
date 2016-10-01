@@ -12,15 +12,15 @@ On the Field Openstack environment, spin up an m3.medium VM with the CentOS 7.2 
 ###Install FreeIPA Server
 To setup the FreeIPA server, install the server software:<br><br>
 <code>
-ipaserver:~ # yum -y install ipa-server<br>
-ipaserver:~ # ipa-server-install<br>
+ipaserver:~ # yum -y install ipa-server<p>
+ipaserver:~ # ipa-server-install<p>
 ...<i>copious amounts of output</i>
 </code>
 
 ###Configure krb5.conf ccache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:<br><br>
 <code>default_ccache_name = KEYRING:persistent:%{uid}</code><br><br>
-to<br><br>
+to<br>
 <code>default_ccache_name = FILE:/tmp/krb5cc_%{uid}</code>
 
 
