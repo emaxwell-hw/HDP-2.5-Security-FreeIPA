@@ -5,24 +5,24 @@ This tutorial describes how to enable Kerberos using a FreeIPA server for LDAP a
 - DNS is already taken care of in the environment
 - FreeIPA will run on RHEL/CentOS 7
 
-##Step 1: Create VMs
-On the Field Openstack environment, create the following VMs:
-- 1 m3.medium VM for the FreeIPA server
-- 6 m3.large VMs for the HDP cluster
+##Step 1: Setup FreeIPA Server
+###Create a VM for FreeIPA
+On the Field Openstack environment, spin up an m3.medium VM with the CentOS 7.2 image. 
 
-##Step 2: Setup FreeIPA Server
-To setup the FreeIPA server, install the server software:
-<br>
+###Install FreeIPA Server
+To setup the FreeIPA server, install the server software:<br>
 <code>
-ipaserver:~ # yum -y install ipa-server
-</code>
-
-Once the IPA server software is installed, you must configure IPA. In the Field Openstack Cloud, DNS is already configured, so no need to use FreeIPA for DNS resolution:
-<br>
-<code>
+ipaserver:~ # yum -y install ipa-server<br>
 ipaserver:~ # ipa-server-install<br>
 ...<i>copious amounts of output</i>
 </code>
+
+###Configure krb5.conf ccache
+HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <pre>/etc/krb5.conf</pre> file and change:<br>
+<code>default_ccache_name = KEYRING:persistent:%{uid}</code><br>
+to<br>
+<code>default_ccache_name = FILE:/tmp/krb5cc_%{uid}</code>
+
 
 ##Step 3: Prepare the HDP VMs
 
