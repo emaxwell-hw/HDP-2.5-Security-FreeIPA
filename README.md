@@ -1,10 +1,10 @@
-#HDP 2.5 Security
-##Create VMs
+#HDP 2.5/Ambari 2.4 Kerberos with FreeIPA
+##Step 1: Create VMs
 On the Field Openstack environment, create the following VMs:
 - 1 m3.medium VM for the FreeIPA server
 - 6 m3.large VMs for the HDP cluster
 
-##Setup FreeIPA Server
+##Step 2: Setup FreeIPA Server
 To setup the FreeIPA server, install the server software:
 <br>
 <code>
@@ -14,9 +14,17 @@ ipaserver:~ # yum -y install ipa-server
 Once the IPA server software is installed, you must configure IPA. In the Field Openstack Cloud, DNS is already configured, so no need to use FreeIPA for DNS resolution:
 <br>
 <code>
-ipaserver:~ # ipa-server-install
+ipaserver:~ # ipa-server-install<br>
 ...<i>copious amounts of output</i>
 </code>
+
+##Step 3: Prepare the HDP VMs
+
+##Step 4: Install the cluster
+
+##Step 5: &lt;Step 5 Title&gt;
+
+
 
 Enabling security in HDP 2.5/Ambari 2.4 with FreeIPA and CentOS 7
 
