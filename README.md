@@ -6,14 +6,16 @@ On the Field Openstack environment, create the following VMs:
 
 ##Setup FreeIPA Server
 To setup the FreeIPA server, install the server software:
+<br>
 <code>
 ipaserver:~ # yum -y install ipa-server
-...<i>copious amounts of output</i> 
 </code>
 
-Once the IPA server software is installed, you must configure IPA. In the Field Openstack Cloud, DNS is already configured 
+Once the IPA server software is installed, you must configure IPA. In the Field Openstack Cloud, DNS is already configured, so no need to use FreeIPA for DNS resolution:
+<br>
 <code>
 ipaserver:~ # ipa-server-install
+...<i>copious amounts of output</i>
 </code>
 
 Enabling security in HDP 2.5/Ambari 2.4 with FreeIPA and CentOS 7
