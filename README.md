@@ -14,7 +14,7 @@ To setup the FreeIPA server, install the server software:
 <pre>
 ipaserver:~ # yum -y install ipa-server
 ipaserver:~ # ipa-server-install
-...copious amounts of output
+<i>...copious amounts of output</i>
 </pre>
 
 ###Configure krb5.conf ccache
