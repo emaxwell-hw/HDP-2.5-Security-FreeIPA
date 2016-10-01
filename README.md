@@ -18,7 +18,7 @@ ipaserver:~ # ipa-server-install<br>
 </code>
 
 ###Configure krb5.conf ccache
-HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <pre>/etc/krb5.conf</pre> file and change:<br>
+HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:<br>
 <code>default_ccache_name = KEYRING:persistent:%{uid}</code><br>
 to<br>
 <code>default_ccache_name = FILE:/tmp/krb5cc_%{uid}</code>
