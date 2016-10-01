@@ -10,12 +10,12 @@ This tutorial describes how to enable Kerberos using a FreeIPA server for LDAP a
 On the Field Openstack environment, spin up an m3.medium VM with the CentOS 7.2 image. 
 
 ###Install FreeIPA Server
-To setup the FreeIPA server, install the server software:<br><br>
-<code>
-ipaserver:~ # yum -y install ipa-server<p>
-ipaserver:~ # ipa-server-install<p>
-...<i>copious amounts of output</i>
-</code>
+To setup the FreeIPA server, install the server software:
+<pre>
+ipaserver:~ # yum -y install ipa-server
+ipaserver:~ # ipa-server-install
+...copious amounts of output
+</pre>
 
 ###Configure krb5.conf ccache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:<br><br>
