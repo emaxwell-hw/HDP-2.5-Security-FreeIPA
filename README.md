@@ -1,5 +1,9 @@
 #HDP 2.5 Security
 ##Create VMs
+On the Field Openstack environment, create the following VMs:
+- 1 m3.medium VM for the FreeIPA server
+- 6 m3.large VMs for the HDP cluster
+
 Enabling security in HDP 2.5/Ambari 2.4 with FreeIPA and CentOS 7
 
 1. Have to enable experimental mode parameter enableipa
