@@ -12,7 +12,7 @@ On the Field Openstack environment, spin up an m3.medium VM with the CentOS 7.2 
 
 ###Install FreeIPA Server
 To setup the FreeIPA server, install the server software:
-<pre>
+```
 yum -y install ntp
 systemctl enable ntpd
 systemctl start ntpd
@@ -21,7 +21,7 @@ yum -y install ipa-server
 ipa-server-install --domain=field.hortonworks.com \
     --realm=FIELD.HORTONWORKS.COM \
     --hostname=ipaserver.field.hortonworks.com
-</pre>
+```
 
 ###Configure krb5.conf credential cache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:
@@ -65,7 +65,7 @@ Support for FreeIPA is not enabled by default in Ambari. You must enable the exp
 <pre>
 http://ambariserver.field.hortonworks.com:8080/#/experimental
 </pre>
-Check the box next to enableipa:
+Check the box next to enableipa:<br>
 ![Image](images/ambari-exp.png?raw=true)
 
 ##Step 5: &lt;Step 5 Title&gt;
