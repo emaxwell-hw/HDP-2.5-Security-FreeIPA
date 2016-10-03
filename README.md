@@ -18,8 +18,11 @@ systemctl enable ntpd
 systemctl start ntpd
 
 yum -y install ipa-server
-ipa-server-install
-<i>...copious amounts of output</i>
+ipa-server-install --domain=field.hortonworks.com \
+    --realm=FIELD.HORTONWORKS.COM \
+    --hostname=ipaserver.field.hortonworks.com
+<i>...
+...copious amounts of output</i>
 </pre>
 
 ###Configure krb5.conf ccache
