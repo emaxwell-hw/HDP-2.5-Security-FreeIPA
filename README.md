@@ -36,6 +36,7 @@ default_ccache_name = FILE:/tmp/krb5cc_%{uid}
 ###Create a hadoopadmin user
 In order to create users in FreeIPA, an administrative use is required. The default admin@REALM user can be used (password created during IPA server install). Alternatively, create a hadoopadmin user:
 ```
+kinit admin@FIELD.HORTONWORKS.COM
 ipa user-add hadoopadmin --first=Hadoop --last=Admin
 ipa group-add-member admins --users=hadoopadmin
 ipa passwd hadoopadmin
