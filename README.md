@@ -95,6 +95,6 @@ To:
 ${spark-env/spark_user}-${cluster_name|toLower()}@${realm}
 ```
 
-![Image](images/ambari-princ-configs.png?raw=true)
+![Image](images/ambari-princ-config.png?raw=true)
 
 The rest of the Wizard should complete successfully.
