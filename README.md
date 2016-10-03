@@ -21,11 +21,9 @@ yum -y install ipa-server
 ipa-server-install --domain=field.hortonworks.com \
     --realm=FIELD.HORTONWORKS.COM \
     --hostname=ipaserver.field.hortonworks.com
-<i>...
-...copious amounts of output</i>
 </pre>
 
-###Configure krb5.conf ccache
+###Configure krb5.conf credential cache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:
 <pre>default_ccache_name = KEYRING:persistent:%{uid}</pre>
 to
@@ -38,7 +36,11 @@ ipa add-user hadoopadmin --first=Hadoop --last=Admin
 ipa group-add-member admins --users=hadoopadmin
 ipa passwd hadoopadmin
 </pre>
-Because of the way FreeIPA automatically expires the new password, it is necessary to kinit as hadoopadmin and change the initial password. The password can be set to the same password:
+Ambari also requires a group to be created called ambari-managed-principals. This group is not currently created by the Ambari Kerberos wizard. Create the group:
+<pre>
+ipa group-add ambari-managed-principals
+</pre>
+Because of the way FreeIPA automatically expires the new password, it is necessary to kinit as hadoopadmin and change the initial password. The password can be set to the same password unless the password policy prohibits password reuse:
 <pre>
 kinit hadoopadmin@REALM
 </pre>
@@ -53,8 +55,18 @@ ipa-client-install --domain=field.hortonworks.com \
     --principal=hadoopadmin@FIELD.HORTONWORKS.COM \
     --password=<i>hadoopadmin_password</i>
 </pre>
+On the Amberi server node, install the ipa-admintools package:
+<pre>
+yum -y install ipa-admintools
+</pre>
 
-##Step 4: Install the cluster
+##Step 4: Enable Experimental FreeIPA Support
+Support for FreeIPA is not enabled by default in Ambari. You must enable the experimental functionality in Ambari before you can select FreeIPA as an option in the Kerberos wizard. In a browser, navigate to:
+<pre>
+http://ambariserver.field.hortonworks.com:8080/#/experimental
+</pre>
+Check the box next to enableipa:
+<image href="images/ambari-exp.jpg">
 
 ##Step 5: &lt;Step 5 Title&gt;
 
