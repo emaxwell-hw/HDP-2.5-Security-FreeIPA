@@ -66,7 +66,7 @@ Support for FreeIPA is not enabled by default in Ambari. You must enable the exp
 http://ambariserver.field.hortonworks.com:8080/#/experimental
 </pre>
 Check the box next to enableipa:
-<image href="images/ambari-exp.png">
+<img href="images/ambari-exp.png">
 
 ##Step 5: &lt;Step 5 Title&gt;
 
