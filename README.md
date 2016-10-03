@@ -25,57 +25,76 @@ ipa-server-install --domain=field.hortonworks.com \
 
 ###Configure krb5.conf credential cache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:
-<pre>default_ccache_name = KEYRING:persistent:%{uid}</pre>
+```
+default_ccache_name = KEYRING:persistent:%{uid}
+```
 to
-<pre>default_ccache_name = FILE:/tmp/krb5cc_%{uid}</pre>
+```
+default_ccache_name = FILE:/tmp/krb5cc_%{uid}
+```
 
 ###Create a hadoopadmin user
 In order to create users in FreeIPA, an administrative use is required. The default admin@REALM user can be used (password created during IPA server install). Alternatively, create a hadoopadmin user:
-<pre>
+```
 ipa add-user hadoopadmin --first=Hadoop --last=Admin
 ipa group-add-member admins --users=hadoopadmin
 ipa passwd hadoopadmin
-</pre>
+```
 Ambari also requires a group to be created called ambari-managed-principals. This group is not currently created by the Ambari Kerberos wizard. Create the group:
-<pre>
+```
 ipa group-add ambari-managed-principals
-</pre>
+```
 Because of the way FreeIPA automatically expires the new password, it is necessary to kinit as hadoopadmin and change the initial password. The password can be set to the same password unless the password policy prohibits password reuse:
-<pre>
+```
 kinit hadoopadmin@REALM
-</pre>
+```
 
 ##Step 3: Prepare the HDP Nodes
 All nodes in the HDP cluster must have the ipa-client software installed and be joined to the FreeIPA server:
-<pre>
+```
 yum -y install ipa-client
 ipa-client-install --domain=field.hortonworks.com \
     --server=ipaserver.field.hortonworks.com \
     --realm=FIELD.HORTONWORKS.COM \
     --principal=hadoopadmin@FIELD.HORTONWORKS.COM \
     --password=<i>hadoopadmin_password</i>
-</pre>
+```
 On the Amberi server node, install the ipa-admintools package:
-<pre>
+```
 yum -y install ipa-admintools
-</pre>
+```
 
 ##Step 4: Enable Experimental FreeIPA Support
 Support for FreeIPA is not enabled by default in Ambari. You must enable the experimental functionality in Ambari before you can select FreeIPA as an option in the Kerberos wizard. In a browser, navigate to:
-<pre>
+```
 http://ambariserver.field.hortonworks.com:8080/#/experimental
-</pre>
-Check the box next to enableipa:<br>
+```
+Check the box next to enableipa:
+
 ![Image](images/ambari-exp.png?raw=true)
 
-##Step 5: &lt;Step 5 Title&gt;
+##Step 5: Run the Kerberos Wizard
+Run the Kerberos wizard from Ambari (Admin -> Kerberos -> Enable Kerberos). Select "Existing IPA" and verify that the prerequisites have been met.
 
+![Image](images/ambari-kerb-wizard.png?raw=true)
 
+Enter the appropriate information into the KDC page:
 
-Enabling security in HDP 2.5/Ambari 2.4 with FreeIPA and CentOS 7
+![Image](images/ambari-kdc-props.png?raw=true)
 
-1. Have to enable experimental mode parameter enableipa
-    - http://ambari.server:8080/#/experimental -> enableipa = true
-2. Have to modify the krb5.conf to not use KEYRING (FILE=/tmp/krb5cc_${uid}
-3. Have to create a group ambari-managed-principals
-4. Have to modify the Spark user’s principal to include toLower() (e.g. ${cluster_name|toLower()})
+Click through to the Configure Identities page of the wizard. There is a bug in the name of the Spark principal that needs to be corrected. FreeIPA requires principal names to be in lower case, but ambari allows the cluster name to be in mixed case. If the cluster contains capital letters, the creation of the Spark principal will fail. To account for this, the principal names should all contain a reference to the toLower() function in the cluster name variable to ensure that capital letters are corrected before creating the principal.
+
+Change the spark.history.kerberos.principal parameter to include the toLower() function: 
+
+Change from:
+```
+${spark-env/spark_user}-${cluster_name}@${realm}
+```
+To:
+```
+${spark-env/spark_user}-${cluster_name|toLower()}@${realm}
+```
+
+![Image](images/ambari-princ-configs.png?raw=true)
+
+The rest of the Wizard should complete successfully.
