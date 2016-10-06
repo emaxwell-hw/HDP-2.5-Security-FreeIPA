@@ -72,7 +72,7 @@ Because of the way FreeIPA automatically expires the new password, it is necessa
 kinit hadoopadmin@EXAMPLE.DOMAIN.COM
 ```
 
-##Step 3: Prepare the HDP Nodes
+##Step 2: Prepare the HDP Nodes
 First, disable the `chronyd` service since it interferes with NTP (which FreeIPA prefers):
 ```
 systemctl stop chronyd
@@ -98,7 +98,7 @@ On the Amberi server node, install the ipa-admintools package:
 yum -y install ipa-admintools
 ```
 
-##Step 4: Enable Experimental FreeIPA Support
+##Step 3: Enable Experimental FreeIPA Support
 Support for FreeIPA is not enabled by default in Ambari. You must enable the experimental functionality in Ambari before you can select FreeIPA as an option in the Kerberos wizard. In a browser, navigate to:
 ```
 http://ambariserver.example.domain.com:8080/#/experimental
@@ -107,7 +107,7 @@ Check the box next to enableipa:
 
 ![Image](images/ambari-exp.png?raw=true)
 
-##Step 5: Run the Kerberos Wizard
+##Step 4: Run the Kerberos Wizard
 Run the Kerberos wizard from Ambari (Admin -> Kerberos -> Enable Kerberos). Select "Existing IPA" and verify that the prerequisites have been met.
 
 ![Image](images/ambari-kerb-wizard.png?raw=true)
