@@ -45,6 +45,19 @@ ipa-server-install --domain=example.domain.com \
     --reverse-zone=3.2.1.in-addr.arpa.
 ```
 
+###Enable PTR Record Sync
+In order for reverse DNS lookups to work, enable PTR record sync on the FreeIPA server.
+
+Get a list of the DNS zones created:
+```
+ipa dnszone-find --all | grep "Zone name"
+```
+
+For each of the DNS zones, enable PTR sync:
+```
+ipa dnszone-mod $zonename --allow-ptr-sync=true
+```
+
 ###Configure krb5.conf credential cache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:
 ```
