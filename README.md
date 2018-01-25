@@ -1,4 +1,4 @@
-#HDP 2.5/Ambari 2.4 Kerberos with FreeIPA
+# HDP 2.5/Ambari 2.4 Kerberos with FreeIPA
 This tutorial describes how to enable Kerberos using a FreeIPA server for LDAP and KDC functions on HDP 2.5. The following assumptions are made:<br>
 - An existing HDP 2.5 cluster
 - No existing IPA server
@@ -6,11 +6,11 @@ This tutorial describes how to enable Kerberos using a FreeIPA server for LDAP a
 - The IPA Server will manage DNS for the cluster
 - FreeIPA will run on RHEL/CentOS 7
 
-##Step 1: Setup FreeIPA Server
-###Create a VM for FreeIPA
+## Step 1: Setup FreeIPA Server
+### Create a VM for FreeIPA
 On the Field Openstack environment, spin up an m3.medium VM with the CentOS 7.2 image. 
 
-###Install Entropy Tools
+### Install Entropy Tools
 Certain operations like generating encryption keys host entropy for creating random data. A fresh system with no processes running and no real device drivers can have issues generating enough random data for these types of operations. Install the rng-tools package and start rngd to help with this issue:
 ```
 yum -y install rng-tools
@@ -18,7 +18,7 @@ systemctl start rngd
 systemctl enable rngd
 ```
 
-###Install FreeIPA Server
+### Install FreeIPA Server
 Install NTP and the FreeIPA software and start the NTP service:
 ```
 yum -y install ntp ipa-server ipa-server-dns
@@ -45,7 +45,7 @@ ipa-server-install --domain=example.domain.com \
     --reverse-zone=3.2.1.in-addr.arpa.
 ```
 
-###Enable PTR Record Sync
+### Enable PTR Record Sync
 In order for reverse DNS lookups to work, enable PTR record sync on the FreeIPA server.
 
 Get a list of the DNS zones created:
@@ -58,7 +58,7 @@ For each of the DNS zones, enable PTR sync:
 ipa dnszone-mod $zonename --allow-ptr-sync=true
 ```
 
-###Configure krb5.conf credential cache
+### Configure krb5.conf credential cache
 HDP does not support the in-memory keyring storage of the Kerberos credential cache. Edit the <i>/etc/krb5.conf</i> file and change:
 ```
 default_ccache_name = KEYRING:persistent:%{uid}
@@ -68,7 +68,7 @@ to
 default_ccache_name = FILE:/tmp/krb5cc_%{uid}
 ```
 
-###Create a hadoopadmin user
+### Create a hadoopadmin user
 In order to create users in FreeIPA, an administrative use is required. The default admin@REALM user can be used (password created during IPA server install). Alternatively, create a hadoopadmin user:
 ```
 kinit admin@EXAMPLE.DOMAIN.COM
@@ -85,7 +85,7 @@ Because of the way FreeIPA automatically expires the new password, it is necessa
 kinit hadoopadmin@EXAMPLE.DOMAIN.COM
 ```
 
-##Step 2: Prepare the HDP Nodes
+## Step 2: Prepare the HDP Nodes
 First, disable the `chronyd` service since it interferes with NTP (which FreeIPA prefers):
 ```
 systemctl stop chronyd
@@ -111,7 +111,7 @@ On the Amberi server node, install the ipa-admintools package:
 yum -y install ipa-admintools
 ```
 
-##Step 3: Enable Experimental FreeIPA Support
+## Step 3: Enable Experimental FreeIPA Support
 Support for FreeIPA is not enabled by default in Ambari. You must enable the experimental functionality in Ambari before you can select FreeIPA as an option in the Kerberos wizard. In a browser, navigate to:
 ```
 http://ambariserver.example.domain.com:8080/#/experimental
@@ -120,7 +120,7 @@ Check the box next to enableipa:
 
 ![Image](images/ambari-exp.png?raw=true)
 
-##Step 4: Run the Kerberos Wizard
+## Step 4: Run the Kerberos Wizard
 Run the Kerberos wizard from Ambari (Admin -> Kerberos -> Enable Kerberos). Select "Existing IPA" and verify that the prerequisites have been met.
 
 ![Image](images/ambari-kerb-wizard.png?raw=true)
