@@ -55,7 +55,7 @@ ipa dnszone-find --all | grep "Zone name"
 
 For each of the DNS zones, enable PTR sync:
 ```
-ipa dnszone-mod $zonename --allow-ptr-sync=true
+ipa dnszone-mod $zonename --allow-sync-ptr=true
 ```
 
 ### Configure krb5.conf credential cache
